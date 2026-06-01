@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- iOS Home Screen & Icons (usa il tuo LOGO.png) -->
+  <link rel="apple-touch-icon" href="LOGO.png">
+  <link rel="icon" type="image/png" href="LOGO.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="YCrypt">
+
+  <title>YCrypt — Offline Recovery Security</title>
+  <meta name="description" content="YCrypt: recovery crittografico offline senza password, seed phrase o cloud fidato." />
+
+  <style>
+    :root{
+      --bg:#000;
+      --text:#f2f2f2;
+      --muted:#b9b9b9;
+      --gold:#c8a34a;
+      --gold2:#f3d27a;
+      --stroke:#1a1a1a;
+      --radius:20px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 30% 0%, #101010 0%, var(--bg) 60%);
+      color:var(--text);
+    }
+    a{color:inherit}
+    .wrap{max-width:1080px;margin:0 auto;padding:28px 18px 80px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{height:38px;width:auto}
+    .pill{
+      border:1px solid var(--stroke);
+      padding:8px 12px;border-radius:999px;
+      color:var(--muted);font-size:14px
+    }
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;}
+    .lang{
+      display:flex;gap:8px;align-items:center;justify-content:flex-end;flex:1;
+    }
+    .lang button{
+      border:1px solid var(--stroke);
+      background:transparent;
+      color:var(--muted);
+      padding:8px 12px;
+      border-radius:999px;
+      cursor:pointer;
+      font-size:14px;
+    }
+    .lang button.active{
+      background: linear-gradient(135deg, rgba(243,210,122,.18), rgba(200,163,74,.10));
+      color:var(--text);
+      border-color: rgba(200,163,74,.45);
+    }
+
+    .hero{padding:56px 0 22px}
+    .kicker{color:var(--gold);font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+    .h-title{
+      font-size:44px;line-height:1.05;margin:16px 0 12px;
+      letter-spacing:-0.02em
+    }
+    .h-sub{font-size:18px;line-height:1.5;color:var(--muted);max-width:860px}
+    .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:12px 16px;border-radius:14px;
+      border:1px solid var(--stroke);text-decoration:none;
+      font-weight:600
+    }
+    .btn.primary{
+      background: linear-gradient(135deg, var(--gold2), var(--gold));
+      color:#120d00;border:none;
+    }
+
+    .sep{height:1px;background:var(--stroke);margin:26px 0}
+    .grid{display:grid;gap:14px}
+    .grid.cols3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.cols2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    @media (max-width:900px){.grid.cols3{grid-template-columns:1fr}}
+    @media (max-width:900px){.grid.cols2{grid-template-columns:1fr}}
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--stroke);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    h2{margin:0 0 12px;font-size:26px}
+    .small{font-size:13px;color:var(--muted)}
+    .list{margin:10px 0 0;padding-left:18px;color:var(--muted)}
+    .list li{margin:8px 0}
+    .foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:14px;margin-top:22px}
+    .anchor{scroll-margin-top:20px}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <div class="topbar">
+      <div class="brand">
+        <img src="LOGO.png" alt="YCrypt logo" />
+        <div class="pill" data-i18n="tagline_pill">Cybersecurity • Offline Recovery</div>
+      </div>
+
+      <div class="lang">
+        <div class="pill mono" data-i18n="brand_pill">Patent pending</div>
+        <button id="btn-it" class="active" onclick="setLang('it')">IT</button>
+        <button id="btn-en" onclick="setLang('en')">EN</button>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div class="kicker" data-i18n="kicker">Offline-first • Non-custodial</div>
+
+      <h1 class="h-title" data-i18n="hero_title">
+        Quando perdi l’accesso, la sicurezza collassa.
+      </h1>
+
+      <p class="h-sub" data-i18n="hero_sub">
+        YCrypt è recovery crittografico offline: elimina password e seed phrase dal processo di recupero,
+        senza dipendere da cloud fidati e senza introdurre un single point of failure.
+      </p>
+
+      <div class="cta">
+        <a class="btn primary"
+           href="mailto:ycrypt.project@proton.me?subject=YCrypt%20-%20Contatto"
+           data-i18n="cta_primary">Richiedi contatto</a>
+        <a class="btn" href="#perche" data-i18n="cta_secondary">Perché è diverso</a>
+      </div>
+
+      <p class="small" style="margin-top:14px;" data-i18n="hero_note">
+        Domanda di brevetto depositata • Early-stage • Focus: Enterprise Secrets & Break-glass
+      </p>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- PROBLEMA -->
+    <section id="problema" class="grid cols3 anchor">
+      <div class="card">
+        <div class="kicker" data-i18n="problem_kicker">Problema</div>
+        <h2 data-i18n="problem_1_title">Password persa</h2>
+        <ul class="list">
+          <li data-i18n="problem_1_a">Accesso irreversibile</li>
+          <li data-i18n="problem_1_b">Escalation e supporto</li>
+          <li data-i18n="problem_1_c">Fermi operativi</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="kicker" data-i18n="problem_kicker">Problema</div>
+        <h2 data-i18n="problem_2_title">Seed phrase smarrita</h2>
+        <ul class="list">
+          <li data-i18n="problem_2_a">Perdita totale</li>
+          <li data-i18n="problem_2_b">Rischio umano elevato</li>
+          <li data-i18n="problem_2_c">Backup sensibili</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="kicker" data-i18n="problem_kicker">Problema</div>
+        <h2 data-i18n="problem_3_title">Recovery cloud</h2>
+        <ul class="list">
+          <li data-i18n="problem_3_a">Non funziona offline</li>
+          <li data-i18n="problem_3_b">Dipendenza esterna</li>
+          <li data-i18n="problem_3_c">Rischio in emergenza</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- PERCHE -->
+    <section id="perche" class="grid cols2 anchor">
+      <div class="card">
+        <div class="kicker" data-i18n="ycrypt_kicker">YCrypt</div>
+        <h2 data-i18n="what_solves_title">Cosa risolve</h2>
+        <ul class="list">
+          <li data-i18n="what_solves_a">Recovery offline anche in emergenza</li>
+          <li data-i18n="what_solves_b">Nessuna credenziale riutilizzabile</li>
+          <li data-i18n="what_solves_c">Nessun single point of failure crittografico</li>
+          <li data-i18n="what_solves_d">Break-glass verificabile (enterprise)</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="kicker" data-i18n="positioning_kicker">Posizionamento</div>
+        <h2 data-i18n="not_login_title">Non è un login system</h2>
+        <ul class="list">
+          <li data-i18n="not_login_a">Non è un token / MFA</li>
+          <li data-i18n="not_login_b">Nasce per il “worst case”</li>
+          <li data-i18n="not_login_c">Protegge la possibilità di recuperare l’accesso</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- USE CASE -->
+    <section class="grid cols3 anchor" id="usecase">
+      <div class="card">
+        <div class="kicker" data-i18n="usecase_kicker">Use case</div>
+        <h2 data-i18n="uc1_title">Enterprise secrets</h2>
+        <p class="small" data-i18n="uc1_desc">Break-glass, governance, continuità operativa.</p>
+      </div>
+
+      <div class="card">
+        <div class="kicker" data-i18n="usecase_kicker">Use case</div>
+        <h2 data-i18n="uc2_title">Cold data offline</h2>
+        <p class="small" data-i18n="uc2_desc">Backup critici e archivi cifrati accessibili senza cloud.</p>
+      </div>
+
+      <div class="card">
+        <div class="kicker" data-i18n="usecase_kicker">Use case</div>
+        <h2 data-i18n="uc3_title">Self-custody regolamentata</h2>
+        <p class="small" data-i18n="uc3_desc">Recovery senza custodia centrale, future-proof.</p>
+      </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- STATO + CONTATTO -->
+    <section id="contatto" class="grid cols2 anchor">
+      <div class="card">
+        <div class="kicker" data-i18n="status_kicker">Stato</div>
+        <h2 data-i18n="status_title">A che punto siamo</h2>
+        <ul class="list">
+          <li data-i18n="status_a">Domanda di brevetto depositata (Patent pending)</li>
+          <li data-i18n="status_b">Core di recovery offline definito e validato</li>
+          <li data-i18n="status_c">Estensione operativa del modello offline a più dispositivi</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="kicker" data-i18n="contact_kicker">Contatto</div>
+        <h2 data-i18n="contact_title">Parliamone</h2>
+        <p class="small" data-i18n="contact_note">
+          Contatto diretto via email. NDA disponibile su richiesta.
+        </p>
+
+        <div class="cta" style="margin-top:12px;">
+          <a class="btn primary"
+             href="mailto:ycrypt.project@proton.me?subject=YCrypt%20-%20Contatto"
+             data-i18n="contact_email_btn">Invia via email</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="foot">
+      <div data-i18n="footer_left">© YCrypt — Offline Recovery Security</div>
+      <div class="mono" data-i18n="footer_right">Patent pending • NDA-ready</div>
+    </div>
+
+  </div>
+
+  <script>
+    const I18N = {
+      it: {
+        tagline_pill: "Cybersecurity • Offline Recovery",
+        brand_pill: "Patent pending",
+        kicker: "Offline-first • Non-custodial",
+        hero_title: "Quando perdi l’accesso, la sicurezza collassa.",
+        hero_sub: "YCrypt è recovery crittografico offline: elimina password e seed phrase dal processo di recupero, senza dipendere da cloud fidati e senza introdurre un single point of failure.",
+        cta_primary: "Richiedi contatto",
+        cta_secondary: "Perché è diverso",
+        hero_note: "Domanda di brevetto depositata • Early-stage • Focus: Enterprise Secrets & Break-glass",
+
+        problem_kicker: "Problema",
+        problem_1_title: "Password persa",
+        problem_1_a: "Accesso irreversibile",
+        problem_1_b: "Escalation e supporto",
+        problem_1_c: "Fermi operativi",
+
+        problem_2_title: "Seed phrase smarrita",
+        problem_2_a: "Perdita totale",
+        problem_2_b: "Rischio umano elevato",
+        problem_2_c: "Backup sensibili",
+
+        problem_3_title: "Recovery cloud",
+        problem_3_a: "Non funziona offline",
+        problem_3_b: "Dipendenza esterna",
+        problem_3_c: "Rischio in emergenza",
+
+        ycrypt_kicker: "YCrypt",
+        what_solves_title: "Cosa risolve",
+        what_solves_a: "Recovery offline anche in emergenza",
+        what_solves_b: "Nessuna credenziale riutilizzabile",
+        what_solves_c: "Nessun single point of failure crittografico",
+        what_solves_d: "Break-glass verificabile (enterprise)",
+
+        positioning_kicker: "Posizionamento",
+        not_login_title: "Non è un login system",
+        not_login_a: "Non è un token / MFA",
+        not_login_b: "Nasce per il “worst case”",
+        not_login_c: "Protegge la possibilità di recuperare l’accesso",
+
+        usecase_kicker: "Use case",
+        uc1_title: "Enterprise secrets",
+        uc1_desc: "Break-glass, governance, continuità operativa.",
+        uc2_title: "Cold data offline",
+        uc2_desc: "Backup critici e archivi cifrati accessibili senza cloud.",
+        uc3_title: "Self-custody regolamentata",
+        uc3_desc: "Recovery senza custodia centrale, future-proof.",
+
+        status_kicker: "Stato",
+        status_title: "A che punto siamo",
+        status_a: "Domanda di brevetto depositata (Patent pending)",
+        status_b: "Core di recovery offline definito e validato",
+        status_c: "Estensione operativa del modello offline a più dispositivi",
+
+        contact_kicker: "Contatto",
+        contact_title: "Parliamone",
+        contact_note: "Contatto diretto via email. NDA disponibile su richiesta.",
+        contact_email_btn: "Invia via email",
+
+        footer_left: "© YCrypt — Offline Recovery Security",
+        footer_right: "Patent pending • NDA-ready"
+      },
+
+      en: {
+        tagline_pill: "Cybersecurity • Offline Recovery",
+        brand_pill: "Patent pending",
+        kicker: "Offline-first • Non-custodial",
+        hero_title: "When you lose access, security collapses.",
+        hero_sub: "YCrypt is offline cryptographic recovery: it removes passwords and seed phrases from the recovery process, without relying on trusted cloud services and without introducing a single point of failure.",
+        cta_primary: "Request contact",
+        cta_secondary: "Why it’s different",
+        hero_note: "Patent application filed • Early-stage • Focus: Enterprise Secrets & Break-glass",
+
+        problem_kicker: "Problem",
+        problem_1_title: "Lost password",
+        problem_1_a: "Irreversible lock-out",
+        problem_1_b: "Escalation and support loops",
+        problem_1_c: "Operational downtime",
+
+        problem_2_title: "Lost seed phrase",
+        problem_2_a: "Total loss risk",
+        problem_2_b: "High human error exposure",
+        problem_2_c: "Sensitive backups",
+
+        problem_3_title: "Cloud recovery",
+        problem_3_a: "Doesn’t work offline",
+        problem_3_b: "External dependency",
+        problem_3_c: "Fails in emergencies",
+
+        ycrypt_kicker: "YCrypt",
+        what_solves_title: "What it solves",
+        what_solves_a: "Offline recovery even in emergencies",
+        what_solves_b: "No reusable credentials",
+        what_solves_c: "No cryptographic single point of failure",
+        what_solves_d: "Verifiable break-glass (enterprise)",
+
+        positioning_kicker: "Positioning",
+        not_login_title: "Not a login system",
+        not_login_a: "Not a token / MFA",
+        not_login_b: "Built for the worst case",
+        not_login_c: "Protects the ability to regain access",
+
+        usecase_kicker: "Use cases",
+        uc1_title: "Enterprise secrets",
+        uc1_desc: "Break-glass, governance, operational continuity.",
+        uc2_title: "Offline cold data",
+        uc2_desc: "Critical backups and encrypted archives without cloud dependency.",
+        uc3_title: "Regulated self-custody",
+        uc3_desc: "Recovery without a central custodian, future-proof.",
+
+        status_kicker: "Status",
+        status_title: "Where we are",
+        status_a: "Patent application filed (Patent pending)",
+        status_b: "Offline recovery core defined and validated",
+        status_c: "Operational extension of the offline model to multiple devices",
+
+        contact_kicker: "Contact",
+        contact_title: "Let’s talk",
+        contact_note: "Direct contact via email. NDA available upon request.",
+        contact_email_btn: "Email me",
+
+        footer_left: "© YCrypt — Offline Recovery Security",
+        footer_right: "Patent pending • NDA-ready"
+      }
+    };
+
+    function setLang(lang){
+      document.getElementById("btn-it").classList.toggle("active", lang === "it");
+      document.getElementById("btn-en").classList.toggle("active", lang === "en");
+
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (I18N[lang] && I18N[lang][key]) el.textContent = I18N[lang][key];
+      });
+
+      document.documentElement.lang = lang;
+      try { localStorage.setItem("ycrypt_lang", lang); } catch(e) {}
+    }
+
+    (function(){
+      let lang = "it";
+      try {
+        const saved = localStorage.getItem("ycrypt_lang");
+        if (saved === "en" || saved === "it") lang = saved;
+      } catch(e) {}
+      setLang(lang);
+    })();
+  </script>
+</body>
+</html>
